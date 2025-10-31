@@ -158,7 +158,9 @@ def import_spec(m, spec_data):
         m.qr_set = True
 
     if task == "search" and reference_region:
-        reference_geom = shape({"type": "MultiPolygon", "coordinates": reference_region})
+        reference_geom = shape(
+            {"type": "MultiPolygon", "coordinates": reference_region}
+        )
         m.roi = ee.Geometry(mapping(reference_geom))
         m.add_gdf(
             gpd.GeoDataFrame(geometry=[reference_geom], crs="EPSG:4326"),
@@ -247,15 +249,15 @@ def export_spec(e, m):
     def ensure_depth(lst, target_depth):
         # Recursively ensure the list has the target depth
         current_depth = get_depth(lst)
-        
+
         while current_depth < target_depth:
             lst = [lst]  # Add a new level of nesting
             current_depth += 1
-        
+
         # If current depth is greater than target, we may need to truncate or adjust the list,
         # but for now, we are assuming both lists already fit this condition.
         return lst
-    
+
     def get_depth(lst):
         # This function returns the depth of a nested list
         if isinstance(lst, list) and lst:

@@ -51,8 +51,9 @@ RUN mamba create -n sims python=3.12.3 -y && \
     mamba install -n sims -c conda-forge gdal -y
 
 # Install gcloud (Google Cloud SDK)
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && \
+RUN mkdir -p /usr/share/keyrings && \
+    curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor --yes --batch --output /usr/share/keyrings/cloud.google.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list > /dev/null && \
     apt-get update -y && \
     apt-get install google-cloud-cli -y && \
     apt-get clean && \
